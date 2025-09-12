@@ -1,0 +1,5 @@
+task_env/
+task_management/
+db.sqlite3
+users/__pycache__/
+task/__pycache__/

@@ -1,6 +1,5 @@
-{% extends "dashboard/Dashboard.html" %} 
-{% block title %}User Task Management Dashboard{% endblock title %}
-{% block tasks %}
+{% extends "dashboard/Dashboard.html" %} {% block title %}User
+Dashboard{%endblock title %} {% block tasks %}
 <!-- task grid -->
 <div class="bg-white rounded-xl shadow-xm">
   <div
@@ -17,7 +16,7 @@
     <div class="grid grid-cols-4 p-4 gap-4 items-center">
       <div class="flex items-center gap-2">
         <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-        <h1 class="text-sm">Test Low Task</h1>
+        <h1 class="text-sm bg-red-800 text-white">Test Low Task</h1>
       </div>
       <div>
         <span class="text-blue-600 bg-blue-50 px-3 py-1 text-sm">Low</span>

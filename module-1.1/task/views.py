@@ -3,8 +3,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-# def home(request):
-#     return render(request,'index.html')
+def home(request):
+    return render(request,'index.html')
 
 def managerDashboard(request):
     return render(request,'Dashboard/manager-Dashboard.html')

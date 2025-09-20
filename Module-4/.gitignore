@@ -1,0 +1,5 @@
+venv/
+db.sqlite3
+users/__pycache__/
+task/__pycache__/
+

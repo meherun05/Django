@@ -12,5 +12,15 @@
     <h1 class="lal_bg">This is Rendered Home!</h1>
     <p>Welcome to Home Page</p>
     <img src="{% static "images/download.jpg" %}" alt="" srcset="">
+    {{names}}
+    {% with count=0 %}
+    {% for name in names %}
+      {% if name == 'Omri' %}
+        <p>{{name}}</p>
+      {% endif %}
+      {{ count|add:1 }}
+    {% endfor %}
+    {{count}}
+    {% endwith %}
   </body>
 </html>

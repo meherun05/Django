@@ -4,7 +4,10 @@ from django.http import HttpResponse
 # Create your views here.
 
 def home(request):
-    return render(request,'index.html')
+    context = {
+        "names" :["Meherun","Omri","Mehrab"]
+    }
+    return render(request,'index.html',context)
 
 def managerDashboard(request):
     return render(request,'Dashboard/manager-Dashboard.html')

@@ -2,12 +2,17 @@ from django.db import models
 
 # Create your models here.
 
+class Employess(models.Model):
+    name = models.CharField(max_length=100);
+    email = models.EmailField(unique=True);
+
 class Project(models.Model):
     name = models.TextField()
     start_date = models.DateField()
 
 class Task(models.Model):
     project = models.ForeignKey(Project,on_delete=models.CASCADE,default=1)
+    assignTo = models.ManyToManyField(Employess,related_name='employeeTask')
     title = models.CharField(max_length= 250)
     description = models.TextField()
     dueDate = models.DateField()

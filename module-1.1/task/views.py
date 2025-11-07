@@ -17,3 +17,6 @@ def userDashboard(request):
 
 # def home(request):
 #     return HttpResponse("Welcome to the Task mangement")
+
+def createTask(request):
+    return render(request,'taskForm.html')

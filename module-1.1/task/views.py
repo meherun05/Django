@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from task.forms import TaskForm
+from task.models import Employess
+from task.models import Task
 
 # Create your views here.
 
@@ -19,4 +22,27 @@ def userDashboard(request):
 #     return HttpResponse("Welcome to the Task mangement")
 
 def createTask(request):
-    return render(request,'taskForm.html')
+    employees = Employess.objects.all()
+    # form = TaskForm(employees = {"name":"John","id":1})
+    form = TaskForm(employees = employees)
+    if request.method == "POST":
+        form = TaskForm(request.POST, employees = employees)
+        if form.is_valid():
+            data = form.cleaned_data
+            # print(form.cleaned_data)
+            title = data.get('title')
+            description = data.get('description')
+            dueDate = data.get('dueDate')
+            assignTo = data.get('assignTo')
+
+            task = Task.objects.create(title=title,description=description,dueDate=dueDate)
+            
+            # assign employees to tasks
+            for empId in assignTo:
+                employee = Employess.objects.get(id=empId)
+                task.assignTo.add(employee)
+            
+            return HttpResponse("Task Added Sucessfully")
+
+    context = {"form": form}
+    return render(request,'taskForm.html',context)

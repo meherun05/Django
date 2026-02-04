@@ -1,8 +1,8 @@
 task_env/
-task_management/
 db.sqlite3
-users/__pycache__/
-task/__pycache__/
+# task_management/
+# users/__pycache__/
+# task/__pycache__/
 
-node_modules/
+# node_modules/
 

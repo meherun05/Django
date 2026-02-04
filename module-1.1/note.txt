@@ -1,0 +1,9 @@
+task_env\Scripts\activate
+
+pip uninstall -r requirements.txt -y
+pip install -r requirements.txt
+python manage.py runserver
+
+
+python manage.py migrate
+python manage.py makemigrations

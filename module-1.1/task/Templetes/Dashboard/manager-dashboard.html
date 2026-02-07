@@ -1,4 +1,9 @@
-{% extends "dashboard/Dashboard.html" %} {% block title %}Admin Dashboard{% endblock title %} {% block tasks %}
+{% extends "dashboard/Dashboard.html" %} 
+{% block title %} 
+  Admin Dashboard 
+{%endblock %} 
+{% block tasks %}
+
 <!-- main part -->
 <div class="grid grid-cols-2 gap-6">
   <!-- left part -->
@@ -9,36 +14,18 @@
       <h1>Today's Tasks</h1>
     </div>
     <div>
+      {% for ts in task %}
       <!-- 1st row -->
       <div class="grid grid-cols-2 p-2 gap-4 justify-items-end">
         <div class="flex items-center gap-2 justify-self-start">
           <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-          <h1 class="text-sm">Complete project proposal</h1>
+          <h1 class="text-sm">{{ts.title}}</h1>
         </div>
         <div>
-          <span class="text-gray-600 px-3 py-1 text-sm">High</span>
+          <span class="text-gray-600 px-3 py-1 text-sm">{{ts.details.priority}}</span>
         </div>
       </div>
-      <!-- 2nd row -->
-      <div class="grid grid-cols-2 p-2 gap-4 justify-items-end">
-        <div class="flex items-center gap-2 justify-self-start">
-          <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
-          <h1 class="text-sm">Review team updates</h1>
-        </div>
-        <div>
-          <span class="text-gray-600 px-3 py-1 text-sm">Normal</span>
-        </div>
-      </div>
-      <!-- 3rd row -->
-      <div class="grid grid-cols-2 p-2 gap-4 justify-items-end">
-        <div class="flex items-center gap-2 justify-self-start">
-          <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
-          <h1 class="text-sm">Prepare for client meeting</h1>
-        </div>
-        <div>
-          <span class="text-gray-600 px-3 py-1 text-sm">Low</span>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
   <!-- right part -->

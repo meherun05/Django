@@ -14,7 +14,7 @@
       <h1>Today's Tasks</h1>
     </div>
     <div>
-      {% for ts in task %}
+      {% for ts in today_tasks %}
       <!-- 1st row -->
       <div class="grid grid-cols-2 p-2 gap-4 justify-items-end">
         <div class="flex items-center gap-2 justify-self-start">
@@ -22,9 +22,11 @@
           <h1 class="text-sm">{{ts.title}}</h1>
         </div>
         <div>
-          <span class="text-gray-600 px-3 py-1 text-sm">{{ts.details.priority}}</span>
+          <span class="text-gray-600 px-3 py-1 text-sm">{{ts.details.get_priority_display}}</span>
         </div>
       </div>
+      {% empty %}
+      <p class="text-sm text-gray-400 p-2">No tasks for today.</p>
       {% endfor %}
     </div>
   </div>
@@ -33,7 +35,7 @@
     <div
       class="grid grid-cols-1 border-b border-gray-100 text-2xl text-black-400"
     >
-      <h1>All Tasks</h1>
+      <h1>{{taskTitle}}</h1>
     </div>
     <div
       class="grid grid-cols-4 p-2 border-b border-gray-100 text-sm text-gray-500"
@@ -45,102 +47,36 @@
     </div>
     <!-- task items -->
     <div class="divide-y divide-gray-100">
-      <!-- 1st row -->
+      {% for ts in tasks %}
       <div class="grid grid-cols-4 p-2 gap-4 items-center">
         <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-          <h1 class="text-sm">Test Low Task</h1>
+          <div class="w-2 h-2 {% if ts.status == 'COMPLETED' %}bg-green-500{% elif ts.status == 'IN_PROGRESS' %}bg-yellow-500{% else %}bg-orange-500{% endif %} rounded-full"></div>
+          <h1 class="text-sm">{{ ts.title }}</h1>
         </div>
         <div>
-          <span class="text-blue-600 bg-blue-50 px-3 py-1 text-sm">Low</span>
+          <span class="{% if ts.details.priority == 'H' %}text-red-600 bg-red-50{% elif ts.details.priority == 'M' %}text-gray-600 bg-gray-50{% else %}text-blue-600 bg-blue-50{% endif %} px-3 py-1 text-sm">
+            {{ ts.details.get_priority_display }}
+          </span>
         </div>
         <div>
           <div class="flex -space-x-2">
+            {% for employee in ts.assignTo.all %}
             <button
-              class="w-8 h-8 rounded-full bg-green-500 hover:bg-green-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
+              class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
+              title="{{ employee.name }}"
             >
-              S
+              {{ employee.name|slice:":1" }}
             </button>
-            <button
-              class="w-8 h-8 rounded-full bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              MS
-            </button>
-            <button
-              class="w-8 h-8 rounded-full bg-orange-500 hover:bg-orange-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              SM
-            </button>
+            {% endfor %}
           </div>
         </div>
         <div>
-          <span class="text-sm text-gray-500">9 month ago</span>
+          <span class="text-sm text-gray-500">{{ ts.createdAt|timesince }} ago</span>
         </div>
       </div>
-      <!-- 2nd row -->
-      <div class="grid grid-cols-4 p-2 gap-4 items-center">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
-          <h1 class="text-sm">Test Task</h1>
-        </div>
-        <div>
-          <span class="text-gray-600 bg-gray-50 px-3 py-1 text-sm">Normal</span>
-        </div>
-        <div>
-          <div class="flex -space-x-2">
-            <button
-              class="w-8 h-8 rounded-full bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              S
-            </button>
-            <button
-              class="w-8 h-8 rounded-full bg-green-500 hover:bg-green-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              MS
-            </button>
-            <button
-              class="w-8 h-8 rounded-full bg-purple-500 hover:bg-purple-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              SM
-            </button>
-            <button
-              class="w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              MM
-            </button>
-          </div>
-        </div>
-        <div>
-          <span class="text-sm text-gray-500">9 month ago</span>
-        </div>
-      </div>
-      <!-- 3rd row -->
-      <div class="grid grid-cols-4 p-2 gap-4 items-center">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
-          <h1 class="text-sm">Test Task</h1>
-        </div>
-        <div>
-          <span class="text-red-600 bg-red-50 px-3 py-1 text-sm">High</span>
-        </div>
-        <div>
-          <div class="flex -space-x-2">
-            <button
-              class="w-8 h-8 rounded-full bg-pink-500 hover:bg-pink-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              MS
-            </button>
-            <button
-              class="w-8 h-8 rounded-full bg-gray-500 hover:bg-gray-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-            >
-              SM
-            </button>
-          </div>
-        </div>
-        <div>
-          <span class="text-sm text-gray-500">9 month ago</span>
-        </div>
-      </div>
+      {% empty %}
+      <p class="text-sm text-gray-400 p-2">No tasks available.</p>
+      {% endfor %}
     </div>
   </div>
 </div>

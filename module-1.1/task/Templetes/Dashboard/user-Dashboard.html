@@ -1,112 +1,71 @@
 {% extends "dashboard/Dashboard.html" %} {% block title %}User
 Dashboard{%endblock title %} {% block tasks %}
-<!-- task grid -->
-<div class="bg-white rounded-xl shadow-xm">
-  <div
-    class="grid grid-cols-4 p-4 border-b border-gray-100 text-sm text-gray-500"
-  >
-    <h1>TASK TITLE</h1>
-    <h1>PRORITY</h1>
-    <h1>TEAM</h1>
-    <h1>CREATED AT</h1>
+<!-- main part -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <!-- left part: Today's Tasks -->
+  <div class="bg-white rounded-xl p-6 shadow-xl">
+    <div class="grid grid-cols-1 border-b border-gray-100 text-2xl text-black-400 mb-4">
+      <h1>Today's Tasks</h1>
+    </div>
+    <div class="space-y-4">
+      {% for ts in today_tasks %}
+      <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 {% if ts.status == 'COMPLETED' %}bg-green-500{% elif ts.status == 'IN_PROGRESS' %}bg-yellow-500{% else %}bg-orange-500{% endif %} rounded-full"></div>
+          <div>
+            <h1 class="text-sm font-medium">{{ ts.title }}</h1>
+            <p class="text-xs text-gray-500">{{ ts.project.name }}</p>
+          </div>
+        </div>
+        <span class="text-xs font-semibold px-2 py-1 rounded {% if ts.details.priority == 'H' %}text-red-600 bg-red-100{% elif ts.details.priority == 'M' %}text-yellow-600 bg-yellow-100{% else %}text-blue-600 bg-blue-100{% endif %}">
+          {{ ts.details.get_priority_display }}
+        </span>
+      </div>
+      {% empty %}
+      <p class="text-sm text-gray-400 text-center py-4">No tasks for today.</p>
+      {% endfor %}
+    </div>
   </div>
-  <!-- task items -->
-  <div class="divide-y divide-gray-100">
-    <!-- 1st row -->
-    <div class="grid grid-cols-4 p-4 gap-4 items-center">
-      <div class="flex items-center gap-2">
-        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-        <h1 class="text-sm bg-red-800 text-white">Test Low Task</h1>
-      </div>
-      <div>
-        <span class="text-blue-600 bg-blue-50 px-3 py-1 text-sm">Low</span>
-      </div>
-      <div>
-        <div class="flex -space-x-2">
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            S
-          </button>
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            MS
-          </button>
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            SM
-          </button>
-        </div>
-      </div>
-      <div>
-        <span class="text-sm text-gray-500">9 month ago</span>
-      </div>
+
+  <!-- right part: All Tasks -->
+  <div class="bg-white rounded-xl p-6 shadow-xl">
+    <div class="grid grid-cols-1 border-b border-gray-100 text-2xl text-black-400 mb-4">
+      <h1>All Tasks</h1>
     </div>
-    <!-- 2nd row -->
-    <div class="grid grid-cols-4 p-4 gap-4 items-center">
-      <div class="flex items-center gap-2">
-        <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
-        <h1 class="text-sm">Test Task</h1>
-      </div>
-      <div>
-        <span class="text-gray-600 bg-gray-50 px-3 py-1 text-sm">Normal</span>
-      </div>
-      <div>
-        <div class="flex -space-x-2">
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            S
-          </button>
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            MS
-          </button>
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            SM
-          </button>
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            MM
-          </button>
-        </div>
-      </div>
-      <div>
-        <span class="text-sm text-gray-500">9 month ago</span>
-      </div>
-    </div>
-    <!-- 3rd row -->
-    <div class="grid grid-cols-4 p-4 gap-4 items-center">
-      <div class="flex items-center gap-2">
-        <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
-        <h1 class="text-sm">Test Task</h1>
-      </div>
-      <div>
-        <span class="text-red-600 bg-red-50 px-3 py-1 text-sm">High</span>
-      </div>
-      <div>
-        <div class="flex -space-x-2">
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            MS
-          </button>
-          <button
-            class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white hover:text-gray flex items-center justify-center text-sm border-2 border-white"
-          >
-            SM
-          </button>
-        </div>
-      </div>
-      <div>
-        <span class="text-sm text-gray-500">9 month ago</span>
-      </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="text-gray-500 border-b border-gray-100">
+          <tr>
+            <th class="pb-2 font-medium">TASK TITLE</th>
+            <th class="pb-2 font-medium text-center">PRIORITY</th>
+            <th class="pb-2 font-medium text-right">CREATED</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          {% for ts in tasks %}
+          <tr>
+            <td class="py-3">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 {% if ts.status == 'COMPLETED' %}bg-green-500{% elif ts.status == 'IN_PROGRESS' %}bg-yellow-500{% else %}bg-orange-500{% endif %} rounded-full"></div>
+                <span class="hover:text-blue-600 cursor-pointer">{{ ts.title }}</span>
+              </div>
+            </td>
+            <td class="py-3 text-center">
+              <span class="px-2 py-1 rounded-full text-xs {% if ts.details.priority == 'H' %}text-red-600 bg-red-50{% elif ts.details.priority == 'M' %}text-gray-600 bg-gray-50{% else %}text-blue-600 bg-blue-50{% endif %}">
+                {{ ts.details.get_priority_display }}
+              </span>
+            </td>
+            <td class="py-3 text-right text-gray-500">
+              {{ ts.createdAt|timesince }} ago
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" class="text-center py-4 text-gray-400">No tasks available.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

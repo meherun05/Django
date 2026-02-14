@@ -1,5 +1,5 @@
 from django import forms
-from task.models import Task
+from task.models import Task,TaskDetails
 
 class TaskForm(forms.Form):
     title =  forms.CharField(max_length=255,label="Task Title")
@@ -19,7 +19,7 @@ class StyleFormMixin:
     """ Mixing to apply style to form field"""
     defaultClasses = "mt-2 border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:outline-none focus:border-transparent focus:ring-blue-500 w-full"
     defaultClassesDate = "mt-2 border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:outline-none focus:border-transparent focus:ring-blue-500 mx-2"
-    defaultClassesCheckbox = "inline-flex items-center cursor-pointer mx-2"
+    defaultClassesCheckbox = "flex flex-wrap gap-4 mt-2"
     def applyStyledWidgets(self):
         for fieldName, field in self.fields.items():
             if isinstance(field.widget,forms.TextInput):
@@ -37,6 +37,10 @@ class StyleFormMixin:
                 field.widget.attrs.update({
                     'class': self.defaultClassesDate
                 })
+            elif isinstance(field.widget, forms.Select):
+                field.widget.attrs.update({
+                    'class': self.defaultClasses
+                })
             elif isinstance(field.widget,forms.CheckboxSelectMultiple):
                 field.widget.attrs.update({
                     'class':self.defaultClassesCheckbox
@@ -50,7 +54,7 @@ class TaskModelForm(StyleFormMixin,forms.ModelForm):
         # exclude = ['project','isCompleted','isUpdated','createdAt','updateAt'] # the fields is not needed
         widgets = {
             'dueDate':forms.SelectDateWidget(),
-            'assignTo':forms.CheckboxSelectMultiple()
+            'assignTo':forms.SelectMultiple()
         }
         """ using mixin widgets"""
 
@@ -76,4 +80,13 @@ class TaskModelForm(StyleFormMixin,forms.ModelForm):
     ''' widgets using mixins'''
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.applyStyledWidgets()
+
+class TaskDetailsForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = TaskDetails
+        fields = ['priority', 'notes']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.applyStyledWidgets()
